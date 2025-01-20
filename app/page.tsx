@@ -1,101 +1,147 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import React, { useState, useRef, useEffect } from 'react';
+
+interface Message {
+  id: number;
+  text: string | null;
+  file: File | null;
+  sender: number;
+  timestamp: string;
+}
+
+const ChatApp = () => {
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [newMessage, setNewMessage] = useState('');
+  const [file, setFile] = useState<File | null>(null);
+  const [activeUser, setActiveUser] = useState(1);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const handleSend = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newMessage.trim() || file) {
+      setMessages([
+        ...messages,
+        {
+          id: Date.now(),
+          text: newMessage || null,
+          file: file || null,
+          sender: activeUser,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        }
+      ]);
+      setNewMessage('');
+      setFile(null);
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0] || null;
+    setFile(selectedFile);
+  };
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="h-screen flex flex-col bg-white">
+      {/* Header */}
+      <div className="bg-white border-b shadow-sm">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="flex items-center justify-between h-16">
+            <h1 className="text-xl font-semibold text-gray-800">Wohnwert Messenger</h1>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setActiveUser(1)}
+                className={`px-4 py-2 rounded-lg transition-all duration-200 ${activeUser === 1 ? 'bg-blue-50 text-blue-600' : 'hover:bg-gray-100 text-gray-700'}`}
+              >
+                Person 1
+              </button>
+              <button
+                onClick={() => setActiveUser(2)}
+                className={`px-4 py-2 rounded-lg transition-all duration-200 ${activeUser === 2 ? 'bg-blue-50 text-blue-600' : 'hover:bg-gray-100 text-gray-700'}`}
+              >
+                Person 2
+              </button>
+            </div>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
+
+      {/* Chat Container */}
+      <div className="flex-1 overflow-hidden bg-white">
+        <div className="max-w-4xl mx-auto h-full px-4 py-6 overflow-y-auto">
+          <div className="flex flex-col gap-2">
+            {messages.map((message, index) => (
+              <div key={message.id} className={`flex ${message.sender === activeUser ? 'justify-end' : 'justify-start'}`}>
+                <div className="flex flex-col max-w-[70%]">
+                  {message.text && (
+                    <div className={`px-4 py-2 rounded-lg ${message.sender === activeUser ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-900'}`}>
+                      {message.text}
+                    </div>
+                  )}
+                  {message.file && (
+                    <div className="mt-2">
+                      {message.file.type.startsWith('image/') ? (
+                        <img src={URL.createObjectURL(message.file)} alt="Uploaded" className="max-w-full rounded-lg" />
+                      ) : (
+                        <a href={URL.createObjectURL(message.file)} download={message.file.name} className="text-blue-500 underline">
+                          {message.file.name}
+                        </a>
+                      )}
+                    </div>
+                  )}
+                  <span className="text-xs text-gray-500 mt-1">
+                    {message.timestamp}
+                  </span>
+                </div>
+              </div>
+            ))}
+            <div ref={messagesEndRef} />
+          </div>
+        </div>
+      </div>
+
+      {/* Message Input */}
+      <div className="bg-white border-t">
+        <div className="max-w-4xl mx-auto p-4">
+          <form onSubmit={handleSend} className="flex gap-2">
+            <input
+              type="text"
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+              placeholder="Aa"
+              className="flex-1 rounded-full text-gray-700 bg-gray-100 border-0 px-6 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
+            />
+            <input
+              type="file"
+              onChange={handleFileChange}
+              className="hidden"
+              id="file-upload"
+            />
+            <label
+              htmlFor="file-upload"
+              className="px-4 py-3 rounded-full bg-gray-100 text-gray-700 cursor-pointer hover:bg-gray-200"
+            >
+              📎
+            </label>
+            <button
+              type="submit"
+              className="px-6 py-3 rounded-full bg-blue-500 text-white font-semibold hover:bg-blue-600 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={!newMessage.trim() && !file}
+            >
+              Send
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
   );
-}
+};
+
+export default ChatApp;
