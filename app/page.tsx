@@ -128,7 +128,7 @@ const ChatApp = () => {
               htmlFor="file-upload"
               className="px-4 py-3 rounded-full bg-gray-100 text-gray-700 cursor-pointer hover:bg-gray-200"
             >
-              📎
+              Attach
             </label>
             <button
               type="submit"
