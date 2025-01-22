@@ -52,7 +52,7 @@ const ChatApp = () => {
     <div className="h-screen flex flex-col bg-white">
       {/* Header */}
       <div className="bg-white border-b shadow-sm">
-        <div className="max-w-4xl mx-auto px-4">
+        <div className="max-w-2xl mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             <h1 className="text-xl font-semibold text-gray-800">Wohnwert Messenger</h1>
             <div className="flex gap-2">
@@ -75,41 +75,55 @@ const ChatApp = () => {
 
       {/* Chat Container */}
       <div className="flex-1 overflow-hidden bg-white">
-        <div className="max-w-4xl mx-auto h-full px-4 py-6 overflow-y-auto">
+        <div className="max-w-2xl mx-auto h-full px-4 py-6 overflow-y-auto">
           <div className="flex flex-col gap-2">
-            {messages.map((message, index) => (
-              <div key={message.id} className={`flex ${message.sender === activeUser ? 'justify-end' : 'justify-start'}`}>
-                <div className="flex flex-col max-w-[70%]">
-                  {message.text && (
-                    <div className={`px-4 py-2 rounded-lg ${message.sender === activeUser ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-900'}`}>
-                      {message.text}
-                    </div>
-                  )}
-                  {message.file && (
-                    <div className="mt-2">
-                      {message.file.type.startsWith('image/') ? (
-                        <img src={URL.createObjectURL(message.file)} alt="Uploaded" className="max-w-full rounded-lg" />
-                      ) : (
-                        <a href={URL.createObjectURL(message.file)} download={message.file.name} className="text-blue-500 underline">
-                          {message.file.name}
-                        </a>
+            {messages.map((message) => (
+              <div key={message.id} className="w-full flex">
+                <div className={`w-3/6 ${message.sender === activeUser ? 'translate-x-full flex justify-center' : 'flex justify-center'}`}>
+            
+                    <div className={ `flex flex-col px-4 py-2 max-w-[80%] border-4 rounded-2xl ${message.sender === activeUser ? 'border-orange-500' : 'border-gray-300'}` }>
+                      {message.text && (
+                        <div
+                          className={` bg-white text-gray-900 break-words `}
+                        >
+                          {message.text}
+                        </div>
                       )}
+                      {message.file && (
+                        <div className="mt-2">
+                          {message.file.type.startsWith('image/') ? (
+                            <img
+                              src={URL.createObjectURL(message.file)}
+                              alt="Uploaded"
+                              className="max-w-full rounded-lg"
+                            />
+                          ) : (
+                            <a
+                              href={URL.createObjectURL(message.file)}
+                              download={message.file.name}
+                              className="text-blue-500 underline"
+                            >
+                              {message.file.name}
+                            </a>
+                          )}
+                        </div>
+                      )}
+                      <span className="text-xs text-gray-500 mt-1">
+                        {message.timestamp}
+                      </span>
                     </div>
-                  )}
-                  <span className="text-xs text-gray-500 mt-1">
-                    {message.timestamp}
-                  </span>
+                  </div>
                 </div>
-              </div>
             ))}
             <div ref={messagesEndRef} />
           </div>
         </div>
       </div>
 
+
       {/* Message Input */}
       <div className="bg-white border-t">
-        <div className="max-w-4xl mx-auto p-4">
+        <div className="max-w-2xl mx-auto p-4">
           <form onSubmit={handleSend} className="flex gap-2">
             <input
               type="text"
