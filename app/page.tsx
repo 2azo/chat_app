@@ -110,6 +110,7 @@ const ChatApp = () => {
                       : 'pl-4'
                   }`}
                 >
+                  
                   <div
                     className={`flex flex-col p-4 max-w-[80%] border-5 rounded-2xl ${
                       message.sender === activeUser
