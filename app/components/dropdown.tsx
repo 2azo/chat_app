@@ -12,7 +12,7 @@ const Dropdown = ({ buttonText, items }) => {
     if (item === "Abbrechen") {
       setSelectedItem(null);
     } else {
-      setSelectedItem(item);
+    setSelectedItem(item);
     }
     setIsOpen(false);
   };

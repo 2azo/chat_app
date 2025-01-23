@@ -18,6 +18,7 @@ const ChatApp = () => {
   const [file, setFile] = useState<File | null>(null);
   const [activeUser, setActiveUser] = useState(1);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [selectedDropdownItem, setSelectedDropdownItem] = useState<string | null>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -43,20 +44,21 @@ const ChatApp = () => {
 
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();
-    if (newMessage.trim() || file) {
-      setMessages([
-        ...messages,
-        {
-          id: Date.now(),
-          text: newMessage || null,
-          file: file || null,
-          sender: activeUser,
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        }
-      ]);
-      setNewMessage('');
-      setFile(null);
-    }
+    if (!newMessage.trim() && !file && !selectedDropdownItem) return;
+  
+    const newMessageObject = {
+      id: Date.now(), // or a unique ID generator
+      text: newMessage.trim(),
+      file: file || null,
+      dropdownSelection: selectedDropdownItem,
+      sender: activeUser,
+      timestamp: new Date().toLocaleTimeString(),
+    };
+  
+    setMessages([...messages, newMessageObject]);
+    setNewMessage('');
+    setFile(null);
+    setSelectedDropdownItem(null); // Reset dropdown after sending
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
