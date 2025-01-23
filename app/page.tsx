@@ -78,10 +78,26 @@ const ChatApp = () => {
         <div className="max-w-2xl mx-auto h-full px-4 py-6 overflow-y-auto">
           <div className="flex flex-col gap-2">
             {messages.map((message) => (
-              <div key={message.id} className="w-full flex">
-                <div className={`w-3/6 ${message.sender === activeUser ? 'translate-x-full flex justify-center' : 'flex justify-center'}`}>
-            
-                    <div className={ `flex flex-col px-4 py-2 max-w-[80%] border-4 rounded-2xl ${message.sender === activeUser ? 'border-orange-500' : 'border-gray-300'}` }>
+              <div
+                key={message.id}
+                className={`w-full flex ${
+                  message.sender === activeUser ? 'justify-end' : 'justify-start'
+                }`}
+              >
+                <div
+                  className={`w-3/5 flex justify-center ${
+                    message.sender === activeUser
+                      ? 'pr-4' 
+                      : 'pl-4'
+                  }`}
+                >
+                  <div
+                    className={`flex flex-col px-4 py-2 max-w-[80%] border-4 rounded-2xl ${
+                      message.sender === activeUser
+                        ? 'border-orange-500'
+                        : 'border-gray-300'
+                    }`}
+                  >
                       {message.text && (
                         <div
                           className={` bg-white text-gray-900 break-words `}
