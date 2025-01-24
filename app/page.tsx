@@ -35,18 +35,20 @@ const ChatApp = () => {
     "Gewerbeanmeldung", 
     "Polizeiliches Führungszeugnis", 
     "Unbedenklichkeits­bescheinigung",
+    "Exposé",
     "Sonstiges",
     "Abbrechen"
   ];
 
   const virtualUserMessages = [
-    "Hallo, wie geht es dir?",
-    "Das klingt interessant.",
-    "Kannst du mir mehr Details erklären?",
-    "Verstehe, das macht Sinn.",
-    "Vielen Dank für deine Nachricht.",
-    // Add more messages as needed
+    "Hallo, ja gerne",
+    "Danke. Wie ist die genaue Adresse von diesem Objekt?",
+    "Super, sieht gut aus!",
+    "Dienstag Vormittag wäre nice.",
+    "Prima! Bis dann ...",
   ];
+
+  const currentMessageIndex = useRef(0);
 
 
   useEffect(() => {
@@ -55,50 +57,64 @@ const ChatApp = () => {
 
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();
-
+  
+    // Prevent sending empty messages
     if (!newMessage.trim() && !file && !selectedDropdownItem) return;
-
+  
     const now = new Date();
-
-      const newMessageObject = {
-        id: Date.now(),
-        text: newMessage.trim(),
-        file: file || null,
-        dropdownSelection: selectedDropdownItem,
-        sender: activeUser,
-        timestamp: `${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} ― ${now.toLocaleDateString([], { day: '2-digit', month: '2-digit', year: 'numeric' })}`,
-      };
-
-        setMessages([...messages, newMessageObject]);
-        setNewMessage('');
-        setFile(null);
-        setSelectedDropdownItem(null); 
-        setResetDropdown(true);
-        setActiveUser(activeUser === 1 ? 2 : 1);
-        
-        
-        // Trigger virtual user response after a short delay
-        setTimeout(() => {
-          const randomMessage = virtualUserMessages[Math.floor(Math.random() * virtualUserMessages.length)];
-          const virtualMessage = {
-            id: Date.now(),
-            text: randomMessage,
-            sender: activeUser === 1 ? 2 : 1,
-            timestamp: new Date().toLocaleTimeString([], { 
-              hour: '2-digit', 
-              minute: '2-digit', 
-              day: '2-digit', 
-              month: '2-digit', 
-              year: 'numeric' 
-            })
-          };
-          setMessages(prevMessages => [...prevMessages, virtualMessage]);
-          
-          // Switch back to original user
-          setActiveUser(activeUser);
-        }, 1000);
-        
-    }
+  
+    // Create the new message object
+    const newMessageObject = {
+      id: Date.now(),
+      text: newMessage.trim(),
+      file: file || null,
+      dropdownSelection: selectedDropdownItem,
+      sender: activeUser,
+      timestamp: `${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} ― ${now.toLocaleDateString([], { day: '2-digit', month: '2-digit', year: 'numeric' })}`,
+    };
+  
+    // Add the new message to the messages array
+    setMessages([...messages, newMessageObject]);
+  
+    // Reset inputs
+    setNewMessage('');
+    setFile(null);
+    setSelectedDropdownItem(null);
+    setResetDropdown(true);
+  
+    // Switch the active user
+    setActiveUser(activeUser === 1 ? 2 : 1);
+  
+    // Send a virtual message after a delay
+    setTimeout(() => {
+      if (currentMessageIndex.current < virtualUserMessages.length) {
+        const now = new Date(); // Get current timestamp for the virtual message
+  
+        // Get the next virtual message in order
+        const randomMessage = virtualUserMessages[currentMessageIndex.current];
+  
+        // Create the virtual message object
+        const virtualMessage = {
+          id: Date.now(),
+          text: randomMessage.trim(),
+          file: null, // Assuming no file for virtual messages
+          dropdownSelection: null, // Assuming no dropdown selection for virtual messages
+          sender: activeUser === 1 ? 2 : 1, // Alternate sender
+          timestamp: `${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} ― ${now.toLocaleDateString([], { day: '2-digit', month: '2-digit', year: 'numeric' })}`,
+        };
+  
+        // Add the virtual message to the messages array
+        setMessages((prevMessages) => [...prevMessages, virtualMessage]);
+  
+        // Increment the message index
+        currentMessageIndex.current += 1;
+  
+        // Keep the active user unchanged
+        setActiveUser(activeUser);
+      }
+    }, 2000);
+  };
+  
 
   useEffect(() => {
     if (resetDropdown) {
@@ -131,9 +147,9 @@ const ChatApp = () => {
         <div className="max-w-2xl mx-auto px-4 relative">
           <div className="flex items-center justify-between h-20">
             <h1 className="text-xl font-semibold text-gray-800">Wohnwert Back Office Messenger</h1>
-            <div className="flex gap-2">
+            {/* <div className="flex gap-2">
               
-              {/* <button
+              <button
                 onClick={() => setActiveUser(1)}
                 className={`px-4 py-2 rounded-lg transition-all duration-200 ${
                   activeUser === 1 ? 'bg-blue-50 text-orange-600' : 'hover:bg-gray-100 text-gray-700'
@@ -148,9 +164,9 @@ const ChatApp = () => {
                 }`}
               >
                 Person 2
-              </button> */}
+              </button>
 
-            </div>
+            </div> */}
           </div>
         </div>
         <img
@@ -175,76 +191,60 @@ const ChatApp = () => {
                 <div
                   key={message.id}
                   className={`w-full flex mt-[2%] ${
-                    message.sender === activeUser ? 'justify-end' : 'justify-start'
+                    message.sender === 1 ? 'justify-end' : 'justify-start'
                   }`}
                 >
+                  <div
+                    className={`w-3/5 flex justify-center ${
+                      message.sender === 1 ? 'pr-4' : 'pl-4'
+                    }`}
+                  >
                     <div
-                      className={`w-3/5 flex justify-center ${
-                        message.sender === activeUser
-                          ? 'pr-4' 
-                          : 'pl-4'
+                      className={`flex flex-col p-8 max-w-[100%] border-8 rounded-2xl leading-5 ${
+                        message.sender === 1 ? 'border-orange-500' : 'border-gray-300'
                       }`}
                     >
-                      {/* for the selected pdf */}
-                      {/* <div className="flex justify-center items-center ">
-                          <div className="text-black">
-                            {selectedDropdownItem}
-                          </div>
-                      </div> */}
-
-                      <div
-                        className={`flex flex-col p-8 max-w-[100%] border-8 rounded-2xl leading-5 ${
-                          message.sender === activeUser
-                            ? 'border-orange-500'
-                            : 'border-gray-300'
+                      {message.text && (
+                        <div className="bg-white text-gray-900 break-words">
+                          {message.text}
+                        </div>
+                      )}
+                      {message.file && (
+                        <div className="mt-2">
+                          {message.file.type.startsWith('image/') ? (
+                            <img
+                              src={URL.createObjectURL(message.file)}
+                              alt="Uploaded"
+                              className="max-w-full"
+                            />
+                          ) : (
+                            <a
+                              href={URL.createObjectURL(message.file)}
+                              download={message.file.name}
+                              className="text-orange-500 underline"
+                            >
+                              {message.file.name}
+                            </a>
+                          )}
+                        </div>
+                      )}
+                      <span
+                        className={`text-xs pt-3 text-black mt-1 flex ${
+                          message.sender === 1 ? 'justify-start ml-2' : 'justify-start ml-2'
                         }`}
                       >
-                          {message.text && (
-                            <div
-                              className={` bg-white text-gray-900 break-words `}
-                            >
-                              {message.text}
-                            </div>
-                          )}
-                          {message.file && (
-                            <div className="mt-2">
-                              {message.file.type.startsWith('image/') ? (
-                                <img
-                                  src={URL.createObjectURL(message.file)}
-                                  alt="Uploaded"
-                                  className="max-w-full"
-                                />
-                              ) : (
-                                <a
-                                  href={URL.createObjectURL(message.file)}
-                                  download={message.file.name}
-                                  className="text-orange-500 underline"
-                                >
-                                  {message.file.name}
-                                </a>
-                              )}
-                            </div>
-                          )}
-                          <span className={`text-xs pt-3 text-black mt-1 flex ${
-                            message.sender === activeUser
-                              ? 'justify-start ml-2'
-                              : 'justify-start ml-2'
-                          }`}>
-                            {message.timestamp}
-                          </span>
-                        </div>
-                        
+                        {message.timestamp}
+                      </span>
                     </div>
-
+                  </div>
                 </div>
-                  
               ))}
 
               <div ref={messagesEndRef} />
             </div>
           </div>
-          
         </div>
+
       
 
 
