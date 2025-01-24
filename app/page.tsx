@@ -73,43 +73,42 @@ const ChatApp = () => {
       timestamp: `${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} ― ${now.toLocaleDateString([], { day: '2-digit', month: '2-digit', year: 'numeric' })}`,
     };
   
-    // Add the new message to the messages array
     setMessages([...messages, newMessageObject]);
   
-    // Reset inputs
+   
     setNewMessage('');
     setFile(null);
     setSelectedDropdownItem(null);
     setResetDropdown(true);
   
-    // Switch the active user
+
     setActiveUser(activeUser === 1 ? 2 : 1);
   
-    // Send a virtual message after a delay
+  
     setTimeout(() => {
       if (currentMessageIndex.current < virtualUserMessages.length) {
-        const now = new Date(); // Get current timestamp for the virtual message
+        const now = new Date(); 
   
-        // Get the next virtual message in order
+     
         const randomMessage = virtualUserMessages[currentMessageIndex.current];
   
-        // Create the virtual message object
+       
         const virtualMessage = {
           id: Date.now(),
           text: randomMessage.trim(),
-          file: null, // Assuming no file for virtual messages
-          dropdownSelection: null, // Assuming no dropdown selection for virtual messages
-          sender: activeUser === 1 ? 2 : 1, // Alternate sender
+          file: null, 
+          dropdownSelection: null, 
+          sender: activeUser === 1 ? 2 : 1, 
           timestamp: `${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} ― ${now.toLocaleDateString([], { day: '2-digit', month: '2-digit', year: 'numeric' })}`,
         };
   
-        // Add the virtual message to the messages array
+        
         setMessages((prevMessages) => [...prevMessages, virtualMessage]);
   
-        // Increment the message index
+        
         currentMessageIndex.current += 1;
   
-        // Keep the active user unchanged
+        
         setActiveUser(activeUser);
       }
     }, 2000);
