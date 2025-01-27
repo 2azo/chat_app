@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import Dropdown from './components/dropdown';
-import logo from "../public/Logo_Wohnwert.jpg";
+// import logo from "../public/Logo_Wohnwert.jpg";
 
 
 interface Message {
@@ -11,6 +11,7 @@ interface Message {
   file: File | null;
   sender: number;
   timestamp: string;
+  dropdownItem: string | null;
 }
 
 const ChatApp = () => {
@@ -19,7 +20,7 @@ const ChatApp = () => {
   const [file, setFile] = useState<File | null>(null);
   const [activeUser, setActiveUser] = useState(1);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const [selectedDropdownItem, setSelectedDropdownItem] = useState(null);
+  const [selectedDropdownItem, setSelectedDropdownItem] = useState("");
   const [temporaryDropdownSelection, setTemporaryDropdownSelection] = useState(null);
   const [resetDropdown, setResetDropdown] = useState(false);
   const scrollToBottom = () => {
@@ -56,29 +57,33 @@ const ChatApp = () => {
   }, [messages]);
 
   const handleSend = (e: React.FormEvent) => {
+    
+    // preventing any default behaviour (I guess)
     e.preventDefault();
   
-    // Prevent sending empty messages
+    // return if emtpy
     if (!newMessage.trim() && !file && !selectedDropdownItem) return;
   
+    // Date object
     const now = new Date();
   
-    // Create the new message object
+    // Message object
     const newMessageObject = {
       id: Date.now(),
       text: newMessage.trim(),
       file: file || null,
       dropdownSelection: selectedDropdownItem,
-      sender: activeUser,
+      sender: activeUser, // just number 1 or 2
       timestamp: `${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} ― ${now.toLocaleDateString([], { day: '2-digit', month: '2-digit', year: 'numeric' })}`,
+      dropdownItem: selectedDropdownItem,
     };
   
+    // copy the old array of message objects and add add the new one to it
     setMessages([...messages, newMessageObject]);
-  
    
     setNewMessage('');
     setFile(null);
-    setSelectedDropdownItem(null);
+    setSelectedDropdownItem("");
     setResetDropdown(true);
   
 
@@ -127,25 +132,26 @@ const ChatApp = () => {
     setFile(selectedFile);
   };
 
-  const handleDropdownSelect = (item) => {
-    // setSelectedDropdownItem(item);
-    setTemporaryDropdownSelection(item);
+  const handleDropdownSelect = (item:string) => {
+    console.log("item :", typeof item);
+    setSelectedDropdownItem(item);
+    // setTemporaryDropdownSelection(item);
   };
 
-  const handleAttach = () => {
-    if (temporaryDropdownSelection) {
-      setSelectedDropdownItem(temporaryDropdownSelection);
-      setTemporaryDropdownSelection(null); // Clear temporary state after attachment
-    }
-  };
+  // const handleDropdownSelect = () => {
+  //   if (temporaryDropdownSelection) {
+  //     setSelectedDropdownItem(temporaryDropdownSelection);
+  //     setTemporaryDropdownSelection(null); // Clear temporary state after attachment
+  //   }
+  // };
 
   return (
     <div className="h-screen flex flex-col bg-white">
       {/* Header */}
-      <div className="bg-white border-b shadow-sm">
-        <div className="max-w-2xl mx-auto px-4 relative">
-          <div className="flex items-center justify-between h-20">
-            <h1 className="text-xl font-semibold text-gray-800">Wohnwert Back Office Messenger</h1>
+      <div className="bg-white border-b shadow-sm  ">
+        <div className="max-w-2xl mx-auto px-4 relative ">
+          <div className="flex items-center justify-between h-20 ">
+            <h1 className="text-xl font-semibold text-gray-800 ">Wohnwert Back Office Messenger</h1>
             {/* <div className="flex gap-2">
               
               <button
@@ -183,9 +189,9 @@ const ChatApp = () => {
 
 
         {/* Chat Container */}
-        <div className="flex-1 overflow-hidden bg-white">
-          <div className="max-w-2xl mx-auto h-full px-4 py-6 overflow-y-auto">
-            <div className="flex flex-col gap-2">
+        <div className="flex-1 overflow-hidden bg-white ">
+          <div className="max-w-2xl mx-auto h-full px-4 py-6 overflow-y-auto ">
+            <div className="flex flex-col gap-2 ">
               {messages.map((message) => (
                 <div
                   key={message.id}
@@ -198,6 +204,13 @@ const ChatApp = () => {
                       message.sender === 1 ? 'pr-4' : 'pl-4'
                     }`}
                   >
+                    
+                    {/* dropdown element rendering */}
+                    <div className={`text-black flex flex-wrap content-center mr-2 ${message.sender === 1 && message.dropdownItem && message.dropdownItem !== "Sonstiges" ? 'block' : 'hidden'}`}>
+                      {message.dropdownItem}
+                    </div>
+
+                    {/* message box */}
                     <div
                       className={`flex flex-col p-8 max-w-[100%] border-8 rounded-2xl leading-5 ${
                         message.sender === 1 ? 'border-orange-500' : 'border-gray-300'
@@ -235,6 +248,12 @@ const ChatApp = () => {
                         {message.timestamp}
                       </span>
                     </div>
+
+                    {/* dropdown element rendering */}
+                    <div className={`text-black flex flex-wrap content-center ml-2 ${message.sender === 2 && message.dropdownItem && message.dropdownItem !== "Sonstiges" ? 'block' : 'hidden'}`}>
+                      {message.dropdownItem}
+                    </div>
+
                   </div>
                 </div>
               ))}
@@ -272,7 +291,7 @@ const ChatApp = () => {
               />
               <label
                 htmlFor="file-upload"
-                className="flex items-center justify-center px-6 py-3 rounded-full bg-gray-100 text-gray-700 cursor-pointer hover:bg-gray-200 font-semibold"
+                className={`${selectedDropdownItem ? "flex" : "hidden" } items-center justify-center px-6 py-3 rounded-full bg-gray-100 text-gray-700 cursor-pointer hover:bg-gray-200 font-semibold`}
               >
                 Anhängen
               </label>

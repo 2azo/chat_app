@@ -33,7 +33,7 @@ const Dropdown = ({ buttonText, items, onSelect, reset }) => {
         type="button"
         className={`inline-flex px-6 py-3 justify-center w-full rounded-full border shadow-sm font-semibold focus:outline-none ${
           selectedItem ? "bg-orange-500 text-white" : "bg-white text-gray-700 border-gray-300"
-        } hover:bg-orange-600 hover:text-white`}
+        } hover:bg-orange-500 hover:text-white`}
       >
           {selectedItem || buttonText}
           <svg
