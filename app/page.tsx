@@ -87,36 +87,36 @@ const ChatApp = () => {
     setResetDropdown(true);
   
 
-    setActiveUser(activeUser === 1 ? 2 : 1);
+    // setActiveUser(activeUser === 1 ? 2 : 1);
   
   
-    setTimeout(() => {
-      if (currentMessageIndex.current < virtualUserMessages.length) {
-        const now = new Date(); 
+    // setTimeout(() => {
+    //   if (currentMessageIndex.current < virtualUserMessages.length) {
+    //     const now = new Date(); 
   
      
-        const randomMessage = virtualUserMessages[currentMessageIndex.current];
+    //     const randomMessage = virtualUserMessages[currentMessageIndex.current];
   
        
-        const virtualMessage = {
-          id: Date.now(),
-          text: randomMessage.trim(),
-          file: null, 
-          dropdownSelection: null, 
-          sender: activeUser === 1 ? 2 : 1, 
-          timestamp: `${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} ― ${now.toLocaleDateString([], { day: '2-digit', month: '2-digit', year: 'numeric' })}`,
-        };
+    //     const virtualMessage = {
+    //       id: Date.now(),
+    //       text: randomMessage.trim(),
+    //       file: null, 
+    //       dropdownSelection: null, 
+    //       sender: activeUser === 1 ? 2 : 1, 
+    //       timestamp: `${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} ― ${now.toLocaleDateString([], { day: '2-digit', month: '2-digit', year: 'numeric' })}`,
+    //     };
   
         
-        setMessages((prevMessages) => [...prevMessages, virtualMessage]);
+    //     setMessages((prevMessages) => [...prevMessages, virtualMessage]);
   
         
-        currentMessageIndex.current += 1;
+    //     currentMessageIndex.current += 1;
   
         
-        setActiveUser(activeUser);
-      }
-    }, 2000);
+    //     setActiveUser(activeUser);
+    //   }
+    // }, 2000);
   };
   
 
@@ -152,7 +152,7 @@ const ChatApp = () => {
         <div className="max-w-2xl mx-auto px-4 relative ">
           <div className="flex items-center justify-between h-20 ">
             <h1 className="text-xl font-semibold text-gray-800 ">Wohnwert Back Office Messenger</h1>
-            {/* <div className="flex gap-2">
+            <div className="flex gap-2">
               
               <button
                 onClick={() => setActiveUser(1)}
@@ -171,7 +171,7 @@ const ChatApp = () => {
                 Person 2
               </button>
 
-            </div> */}
+            </div>
           </div>
         </div>
         <img
@@ -180,11 +180,11 @@ const ChatApp = () => {
             alt="Wohnwert Logo"
           />
 
-          <img
+          {/* <img
             className="absolute top-0 left-[65%] h-20"
             src="/Vertriebportrais_Mann_01.jpg"
             alt="Vertriebler"
-          />
+          /> */}
       </div>
 
 
@@ -199,16 +199,30 @@ const ChatApp = () => {
                     message.sender === 1 ? 'justify-end' : 'justify-start'
                   }`}
                 >
-                  <div
-                    className={`w-3/5 flex justify-center ${
+                 <div
+                    className={`relative w-3/5 flex justify-center ${
                       message.sender === 1 ? 'pr-4' : 'pl-4'
                     }`}
                   >
-                    
-                    {/* dropdown element rendering */}
-                    <div className={`text-black flex flex-wrap content-center mr-2 ${message.sender === 1 && message.dropdownItem && message.dropdownItem !== "Sonstiges" ? 'block' : 'hidden'}`}>
+                    {/* dropdown element rendering (right) */}
+                    <div
+                      className={`text-black absolute top-[44.5%] right-[103%] leading-[0.9rem] whitespace-nowrap ${
+                        message.sender === 1 &&
+                        message.dropdownItem &&
+                        message.dropdownItem !== "Sonstiges"
+                          ? 'block'
+                          : 'hidden'
+                      }`}
+                    >
                       {message.dropdownItem}
                     </div>
+
+                    {/* Horizontal line */}
+                    {message.sender === 1 && message.dropdownItem && message.dropdownItem !== "Sonstiges" && (
+                      <div
+                        className="absolute left-0 right-0 top-1/2 h-0.5 w-[15%]  bg-black"
+                      ></div>
+                    )}
 
                     {/* message box */}
                     <div
@@ -242,19 +256,39 @@ const ChatApp = () => {
                       )}
                       <span
                         className={`text-xs pt-3 text-black mt-1 flex ${
-                          message.sender === 1 ? 'justify-start ml-2' : 'justify-start ml-2'
+                          message.sender === 1
+                            ? 'justify-start ml-2'
+                            : 'justify-start ml-2'
                         }`}
                       >
                         {message.timestamp}
                       </span>
                     </div>
 
-                    {/* dropdown element rendering */}
-                    <div className={`text-black flex flex-wrap content-center ml-2 ${message.sender === 2 && message.dropdownItem && message.dropdownItem !== "Sonstiges" ? 'block' : 'hidden'}`}>
+                    
+                    {/* Horizontal line */}
+                    {message.sender === 2 && message.dropdownItem && message.dropdownItem !== "Sonstiges" && (
+                      <div
+                        className="absolute left-[85%] right-0 top-1/2 h-0.5 w-[15%]  bg-black"
+                      ></div>
+                    )}
+
+                    {/* dropdown element rendering (left) */}
+                    <div
+                      className={`text-black absolute top-[44.5%] left-[103%] leading-[0.9rem] whitespace-nowrap ${
+                        message.sender === 2 &&
+                        message.dropdownItem &&
+                        message.dropdownItem !== "Sonstiges"
+                          ? 'block'
+                          : 'hidden'
+                      }`}
+                    >
                       {message.dropdownItem}
                     </div>
 
+                    
                   </div>
+
                 </div>
               ))}
 
@@ -270,6 +304,7 @@ const ChatApp = () => {
       <div className="bg-white border-t">
         <div className="max-w-2xl mx-auto p-4">
           <form onSubmit={handleSend} className="space-y-4">
+            
             {/* Input Section */}
             <div>
               <input
