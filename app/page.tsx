@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import { FileText } from 'lucide-react';
 import Dropdown from './components/dropdown';
 // import logo from "../public/Logo_Wohnwert.jpg";
 
@@ -206,7 +207,7 @@ const ChatApp = () => {
                   >
                     {/* dropdown element rendering (right) */}
                     <div
-                      className={`text-black absolute top-[44.5%] right-[103%] leading-[0.9rem] whitespace-nowrap ${
+                      className={`text-black absolute top-[47.5%] right-[103%] leading-[0.9rem] whitespace-nowrap ${
                         message.sender === 1 &&
                         message.dropdownItem &&
                         message.dropdownItem !== "Sonstiges"
@@ -236,14 +237,16 @@ const ChatApp = () => {
                         </div>
                       )}
                       {message.file && (
-                        <div className="mt-2">
-                          {message.file.type.startsWith('image/') ? (
-                            <img
-                              src={URL.createObjectURL(message.file)}
-                              alt="Uploaded"
-                              className="max-w-full"
-                            />
-                          ) : (
+                      <div className="mt-2">
+                        {message.file.type.startsWith('image/') ? (
+                          <img
+                            src={URL.createObjectURL(message.file)}
+                            alt="Uploaded"
+                            className="max-w-full"
+                          />
+                        ) : message.file.type === 'application/pdf' ? (
+                          <div className="flex flex-col items-start gap-2">
+                            <FileText className="w-full h-full text-orange-500 stroke-1" />
                             <a
                               href={URL.createObjectURL(message.file)}
                               download={message.file.name}
@@ -251,9 +254,18 @@ const ChatApp = () => {
                             >
                               {message.file.name}
                             </a>
-                          )}
-                        </div>
-                      )}
+                          </div>
+                        ) : (
+                          <a
+                            href={URL.createObjectURL(message.file)}
+                            download={message.file.name}
+                            className="text-orange-500 underline"
+                          >
+                            {message.file.name}
+                          </a>
+                        )}
+                      </div>
+                    )}
                       <span
                         className={`text-xs pt-3 text-black mt-1 flex ${
                           message.sender === 1
@@ -275,7 +287,7 @@ const ChatApp = () => {
 
                     {/* dropdown element rendering (left) */}
                     <div
-                      className={`text-black absolute top-[44.5%] left-[103%] leading-[0.9rem] whitespace-nowrap ${
+                      className={`text-black absolute top-[47.5%] left-[103%] leading-[0.9rem] whitespace-nowrap ${
                         message.sender === 2 &&
                         message.dropdownItem &&
                         message.dropdownItem !== "Sonstiges"
