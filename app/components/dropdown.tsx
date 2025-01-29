@@ -33,6 +33,11 @@ const Dropdown = ({ buttonText, items, onSelect, reset }) => {
   }, [reset]);
 
   useEffect(() => {
+    
+    if (isOpen == false) {
+      return;
+    }
+
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsOpen(false);
