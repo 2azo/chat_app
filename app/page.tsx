@@ -3,7 +3,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FileText } from 'lucide-react';
 import Dropdown from './components/dropdown';
+import Header from './components/header';
+
+// not need to import what's in app.tsx
+
 // import logo from "../public/Logo_Wohnwert.jpg";
+// import BubbleSvg from '../public/chat-bubble.svg'; 
 
 
 interface Message {
@@ -151,44 +156,11 @@ const ChatApp = () => {
   return (
     <div className="h-screen flex flex-col bg-white">
       {/* Header */}
-      <div className="bg-white border-b shadow-sm  ">
-        <div className="max-w-2xl mx-auto px-4 relative ">
-          <div className="flex items-center justify-between h-20 ">
-            <h1 className="text-xl font-semibold text-gray-800 ">Wohnwert Back Office Messenger</h1>
-            <div className="flex gap-2">
-              
-              <button
-                onClick={() => setActiveUser(1)}
-                className={`px-4 py-2 rounded-lg transition-all duration-200 ${
-                  activeUser === 1 ? 'bg-blue-50 text-orange-600' : 'hover:bg-gray-100 text-gray-700'
-                }`}
-              >
-                Person 1
-              </button>
-              <button
-                onClick={() => setActiveUser(2)}
-                className={`px-4 py-2 rounded-lg transition-all duration-200 ${
-                  activeUser === 2 ? 'bg-blue-50 text-orange-600' : 'hover:bg-gray-100 text-gray-700'
-                }`}
-              >
-                Person 2
-              </button>
+      <Header
+                activeUser={activeUser}
+                setActiveUser={setActiveUser}
+      />
 
-            </div>
-          </div>
-        </div>
-        <img
-            className="absolute top-0 left-[9%] h-20 "
-            src="/Logo_Wohnwert.jpg"
-            alt="Wohnwert Logo"
-          />
-
-          {/* <img
-            className="absolute top-0 left-[65%] h-20"
-            src="/Vertriebportrais_Mann_01.jpg"
-            alt="Vertriebler"
-          /> */}
-      </div>
 
 
         {/* Chat Container */}
@@ -231,48 +203,102 @@ const ChatApp = () => {
                       ></div>
                     )}
 
-                    
+                    {/* chat bubble svg */}
+                    {/* <img
+                      src="/chat-bubble.svg"
+                      alt="Message Bubble"
+                      className={`w-24 absolute scale-y-200 ${
+                        message.sender === 1 ? "text-orange-500" : "text-gray-300 -scale-x-100"
+                      }`}
+                    /> */}
 
                     {/* message box */}
                     <div
-                      className={`flex flex-col p-8 max-w-[100%] border-8 rounded-2xl leading-5 ${
-                        message.sender === 1 ? 'border-orange-500 rounded-[3rem_3rem_0_3rem]' : 'border-gray-300 rounded-[3rem_3rem_3rem_0]'
+                      className={`relative flex flex-col p-8 max-w-[100%] border-8  leading-5 ${
+                        message.sender === 1
+                          ? 'border-[#f97316] rounded-[1rem_1rem_1rem_1rem]'
+                          : 'border-gray-300 rounded-[1rem_1rem_1rem_1rem]'
                       }`}
                     >
-                      {message.text && (
-                        <div className="bg-white text-gray-900 break-words">
-                          {message.text}
-                        </div>
+                      
+                      {/* Arrow Styling */}
+                      {message.sender === 1 && (
+                        <>
+                          <div
+                            className="absolute top-full right-[8%] w-0 h-0 border-solid"
+                            style={{
+                              borderWidth: '9px',
+                              borderColor: '#f97316 #f97316 transparent transparent',
+                              borderStyle: 'solid',
+                            }}
+                          ></div>
+                          <div
+                            className="absolute top-[calc(100%-5px)] right-[calc(8%+3px)] w-0 h-0 border-solid"
+                            style={{
+                              borderWidth: '8px',
+                              borderColor: 'white white transparent transparent',
+                              borderStyle: 'solid',
+                            }}
+                          ></div>
+                        </>
                       )}
+
+                      {message.sender !== 1 && (
+                        <>
+                          <div
+                            className="absolute top-full left-[8%] w-0 h-0 border-solid"
+                            style={{
+                              borderWidth: '9px',
+                              borderColor: 'gray gray transparent transparent',
+                              borderStyle: 'solid',
+                            }}
+                          ></div>
+                          <div
+                            className="absolute top-[calc(100%-5px)] left-[calc(8%+3px)] w-0 h-0 border-solid"
+                            style={{
+                              borderWidth: '8px',
+                              borderColor: 'white white transparent transparent',
+                              borderStyle: 'solid',
+                            }}
+                          ></div>
+                        </>
+                      )}
+
+                      {/* Message Text */}
+                      {message.text && (
+                        <div className="bg-white text-gray-900 break-words">{message.text}</div>
+                      )}
+
+                      {/* Message File */}
                       {message.file && (
-                      <div className="mt-2">
-                        {message.file.type.startsWith('image/') ? (
-                          <img
-                            src={URL.createObjectURL(message.file)}
-                            alt="Uploaded"
-                            className="max-w-full"
-                          />
-                        ) : message.file.type === 'application/pdf' ? (
-                          <div className="flex flex-col items-start gap-2">
-                            <FileText className="w-full h-full text-gray-800 stroke-1" />
+                        <div className="mt-2">
+                          {message.file.type.startsWith('image/') ? (
+                            <img
+                              src={URL.createObjectURL(message.file)}
+                              alt="Uploaded"
+                              className="max-w-full"
+                            />
+                          ) : message.file.type === 'application/pdf' ? (
+                            <div className="flex flex-col items-start gap-2 w-[10rem]">
+                              <FileText className="w-full h-full text-gray-800 stroke-1" />
+                              <a
+                                href={URL.createObjectURL(message.file)}
+                                download={message.file.name}
+                                className="text-[#f97316] underline"
+                              >
+                                {message.file.name}
+                              </a>
+                            </div>
+                          ) : (
                             <a
                               href={URL.createObjectURL(message.file)}
                               download={message.file.name}
-                              className="text-orange-500 underline"
+                              className="text-[#f97316] underline"
                             >
                               {message.file.name}
                             </a>
-                          </div>
-                        ) : (
-                          <a
-                            href={URL.createObjectURL(message.file)}
-                            download={message.file.name}
-                            className="text-orange-500 underline"
-                          >
-                            {message.file.name}
-                          </a>
-                        )}
-                      </div>
+                          )}
+                        </div>
                       
                     )}
                     
