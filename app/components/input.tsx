@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Dropdown from './dropdown';
 
 
@@ -6,14 +6,8 @@ const Input = ({ messages, setMessages, options, activeUser  }) => {
     
       const [newMessage, setNewMessage] = useState('');
       const [file, setFile] = useState<File | null>(null);
-    //   const [activeUser, setActiveUser] = useState(1);
-      // const messagesEndRef = useRef<HTMLDivElement>(null);
       const [selectedDropdownItem, setSelectedDropdownItem] = useState("");
-      // const [temporaryDropdownSelection, setTemporaryDropdownSelection] = useState(null);
       const [resetDropdown, setResetDropdown] = useState(false);
-      // const scrollToBottom = () => {
-      //   messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-      // };
       
     const handleSend = (e: React.FormEvent) => {
         
@@ -46,36 +40,7 @@ const Input = ({ messages, setMessages, options, activeUser  }) => {
         setResetDropdown(true);
       
     
-        // setActiveUser(activeUser === 1 ? 2 : 1);
-      
-      
-        // setTimeout(() => {
-        //   if (currentMessageIndex.current < virtualUserMessages.length) {
-        //     const now = new Date(); 
-      
-         
-        //     const randomMessage = virtualUserMessages[currentMessageIndex.current];
-      
-           
-        //     const virtualMessage = {
-        //       id: Date.now(),
-        //       text: randomMessage.trim(),
-        //       file: null, 
-        //       dropdownSelection: null, 
-        //       sender: activeUser === 1 ? 2 : 1, 
-        //       timestamp: `${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} ― ${now.toLocaleDateString([], { day: '2-digit', month: '2-digit', year: 'numeric' })}`,
-        //     };
-      
-            
-        //     setMessages((prevMessages) => [...prevMessages, virtualMessage]);
-      
-            
-        //     currentMessageIndex.current += 1;
-      
-            
-        //     setActiveUser(activeUser);
-        //   }
-        // }, 2000);
+        
       };
 
       const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
