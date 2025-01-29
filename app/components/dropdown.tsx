@@ -32,8 +32,10 @@ const Dropdown = ({ buttonText, items, onSelect, reset }) => {
     }
   }, [reset]);
 
+  
+
   useEffect(() => {
-    
+
     if (isOpen == false) {
       return;
     }
