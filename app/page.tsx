@@ -22,7 +22,7 @@ const ChatApp = () => {
   const [activeUser, setActiveUser] = useState(1);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [selectedDropdownItem, setSelectedDropdownItem] = useState("");
-  const [temporaryDropdownSelection, setTemporaryDropdownSelection] = useState(null);
+  // const [temporaryDropdownSelection, setTemporaryDropdownSelection] = useState(null);
   const [resetDropdown, setResetDropdown] = useState(false);
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -63,7 +63,7 @@ const ChatApp = () => {
     e.preventDefault();
   
     // return if emtpy
-    if (!newMessage.trim() && !file && !selectedDropdownItem) return;
+    if (!newMessage.trim() && !file ) return;
   
     // Date object
     const now = new Date();
@@ -126,6 +126,8 @@ const ChatApp = () => {
       setResetDropdown(false); 
     }
   }, [resetDropdown]);
+
+ 
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()
@@ -207,7 +209,7 @@ const ChatApp = () => {
                   >
                     {/* dropdown element rendering (right) */}
                     <div
-                      className={`text-black absolute top-[47.5%] right-[103%] leading-[0.9rem] whitespace-nowrap ${
+                      className={`text-black absolute top-[44.5%] right-[101%] leading-[0.9rem] whitespace-nowrap ${
                         message.sender === 1 &&
                         message.dropdownItem &&
                         message.dropdownItem !== "Sonstiges"
@@ -215,7 +217,11 @@ const ChatApp = () => {
                           : 'hidden'
                       }`}
                     >
-                      {message.dropdownItem}
+                      {/* Parentheses */}
+                      <span className="text-2xl">(</span>
+                      {/* Text */}
+                      <span className="text-base"> {message.dropdownItem} </span>
+                      <span className="text-2xl">)</span>
                     </div>
 
                     {/* Horizontal line */}
@@ -225,10 +231,12 @@ const ChatApp = () => {
                       ></div>
                     )}
 
+                    
+
                     {/* message box */}
                     <div
                       className={`flex flex-col p-8 max-w-[100%] border-8 rounded-2xl leading-5 ${
-                        message.sender === 1 ? 'border-orange-500' : 'border-gray-300'
+                        message.sender === 1 ? 'border-orange-500 rounded-[3rem_3rem_0_3rem]' : 'border-gray-300 rounded-[3rem_3rem_3rem_0]'
                       }`}
                     >
                       {message.text && (
@@ -246,7 +254,7 @@ const ChatApp = () => {
                           />
                         ) : message.file.type === 'application/pdf' ? (
                           <div className="flex flex-col items-start gap-2">
-                            <FileText className="w-full h-full text-orange-500 stroke-1" />
+                            <FileText className="w-full h-full text-gray-800 stroke-1" />
                             <a
                               href={URL.createObjectURL(message.file)}
                               download={message.file.name}
@@ -265,7 +273,9 @@ const ChatApp = () => {
                           </a>
                         )}
                       </div>
+                      
                     )}
+                    
                       <span
                         className={`text-xs pt-3 text-black mt-1 flex ${
                           message.sender === 1
@@ -287,7 +297,7 @@ const ChatApp = () => {
 
                     {/* dropdown element rendering (left) */}
                     <div
-                      className={`text-black absolute top-[47.5%] left-[103%] leading-[0.9rem] whitespace-nowrap ${
+                      className={`text-black absolute top-[44.5%] left-[101%] leading-[0.9rem] whitespace-nowrap ${
                         message.sender === 2 &&
                         message.dropdownItem &&
                         message.dropdownItem !== "Sonstiges"
@@ -295,7 +305,11 @@ const ChatApp = () => {
                           : 'hidden'
                       }`}
                     >
-                      {message.dropdownItem}
+                      {/* Parentheses */}
+                      <span className="text-2xl">(</span>
+                      {/* Text */}
+                      <span className="text-base"> {message.dropdownItem} </span>
+                      <span className="text-2xl">)</span>
                     </div>
 
                     
@@ -324,7 +338,14 @@ const ChatApp = () => {
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
                 placeholder="Input your text here ..."
-                className="w-full rounded-full text-gray-700 bg-gray-100 border-0 px-6 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500 placeholder-gray-500"
+                className={`w-full rounded-full text-gray-700 bg-gray-100 border-0 px-6 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500 placeholder-gray-500 
+                  ${
+                    Boolean(selectedDropdownItem)
+                      ? 'opacity-50 cursor-not-allowed bg-gray-200 text-gray-400'
+                      : ''
+                  }
+                  `}
+                disabled={Boolean(selectedDropdownItem)}
               />
             </div>
 
@@ -354,7 +375,7 @@ const ChatApp = () => {
               <button
                 type="submit"
                 className="px-6 py-3 rounded-full bg-orange-500 text-white font-semibold hover:bg-orange-600 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={!newMessage.trim() && !file && !selectedDropdownItem}
+                disabled={!newMessage.trim() && !file}
               >
                 Senden
               </button>
