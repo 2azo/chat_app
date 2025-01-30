@@ -44,13 +44,26 @@ const Input = ({ messages, setMessages, options, activeUser  }) => {
       };
 
       const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-          e.preventDefault()
-          const selectedFile = e.target.files?.[0] || null;
-          setFile(selectedFile);
-        };
-
+        e.preventDefault();
+        const selectedFile = e.target.files?.[0] || null;
+      
+        if (selectedFile) {
+          const fileType = selectedFile.type; // MIME type (e.g., application/pdf)
+          const fileName = selectedFile.name; // file name
+      
+          
+          if (fileType === "application/pdf" || selectedDropdownItem === "Sonstiges / Bild") {
+            setFile(selectedFile);
+          } else {
+            alert("Only PDF files are allowed.");
+            e.target.value = "";
+            setFile(null); 
+          }
+        }
+      };
+ 
         const handleDropdownSelect = (item:string) => {
-            console.log("item :", typeof item);
+            // console.log("item :", typeof item);
             setSelectedDropdownItem(item);
             // setTemporaryDropdownSelection(item);
         };
@@ -77,12 +90,12 @@ const Input = ({ messages, setMessages, options, activeUser  }) => {
                     placeholder="Input your text here ..."
                     className={`w-full rounded-full text-gray-700 bg-gray-100 border-0 px-6 py-3 focus:outline-none focus:ring-2 focus:ring-orange-500 placeholder-gray-500 
                     ${
-                        Boolean(selectedDropdownItem)
+                        Boolean(selectedDropdownItem && selectedDropdownItem !== "Sonstiges / Bild")
                         ? 'opacity-50 cursor-not-allowed bg-gray-200 text-gray-400'
                         : ''
                     }
                     `}
-                    disabled={Boolean(selectedDropdownItem)}
+                    disabled={Boolean(selectedDropdownItem && selectedDropdownItem !== "Sonstiges / Bild")}
                 />
                 </div>
 

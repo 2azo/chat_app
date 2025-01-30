@@ -31,7 +31,7 @@ const ChatApp = () => {
     "Polizeiliches Führungszeugnis", 
     "Unbedenklichkeits­bescheinigung",
     "Exposé",
-    "Sonstiges",
+    "Sonstiges / Bild",
     "Abbrechen"
   ];
 
@@ -50,7 +50,7 @@ const ChatApp = () => {
 
   return (
     <div className="h-screen flex flex-col bg-white">
-      
+
       {/* Header */}
       <Header
                 activeUser={activeUser}

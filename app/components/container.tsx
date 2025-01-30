@@ -46,7 +46,7 @@ const Container = ({ messages  }) => {
                             className={`text-black absolute top-[44.5%] right-[99%] leading-[0.9rem] whitespace-nowrap ${
                             message.sender === 1 &&
                             message.dropdownItem &&
-                            message.dropdownItem !== "Sonstiges"
+                            message.dropdownItem !== "Sonstiges / Bild"
                                 ? 'block'
                                 : 'hidden'
                             }`}
@@ -59,7 +59,7 @@ const Container = ({ messages  }) => {
                         </div>
 
                         {/* Horizontal line */}
-                        {message.sender === 1 && message.dropdownItem && message.dropdownItem !== "Sonstiges" && (
+                        {message.sender === 1 && message.dropdownItem && message.dropdownItem !== "Sonstiges / Bild" && (
                             <div
                             className="absolute left-[2%] right-0 top-1/2 h-0.5 w-[13%]  bg-black"
                             ></div>
@@ -148,43 +148,47 @@ const Container = ({ messages  }) => {
                             </>
                             )}
 
-                            {/* Message Text */}
-                            {message.text && (
-                            <div className="bg-white text-gray-900 break-words">{message.text}</div>
-                            )}
+                            
 
                             {/* Message File */}
                             {message.file && (
-                            <div className="mt-2">
-                                {message.file.type.startsWith('image/') ? (
-                                <img
-                                    src={URL.createObjectURL(message.file)}
-                                    alt="Uploaded"
-                                    className="max-w-full"
-                                />
-                                ) : message.file.type === 'application/pdf' ? (
-                                <div className="flex flex-col items-start gap-2 w-[10rem]">
-                                    <FileText className="w-full h-full text-gray-800 stroke-1" />
+                                <div className="mt-2">
+                                    {message.file.type.startsWith('image/') ? (
+                                    <img
+                                        src={URL.createObjectURL(message.file)}
+                                        alt="Uploaded"
+                                        className="max-w-full mb-[1rem] "
+                                    />
+                                    ) : message.file.type === 'application/pdf' ? (
+                                    <div className="flex flex-col items-start gap-2 w-[10rem]">
+                                        <FileText className="w-full h-full text-gray-800 stroke-1" />
+                                        <a
+                                        href={URL.createObjectURL(message.file)}
+                                        download={message.file.name}
+                                        className="text-[#f97316] underline"
+                                        >
+                                        {message.file.name}
+                                        </a>
+                                    </div>
+                                    ) : (
                                     <a
-                                    href={URL.createObjectURL(message.file)}
-                                    download={message.file.name}
-                                    className="text-[#f97316] underline"
+                                        href={URL.createObjectURL(message.file)}
+                                        download={message.file.name}
+                                        className="text-[#f97316] underline"
                                     >
-                                    {message.file.name}
+                                        {message.file.name}
                                     </a>
+                                    )}
                                 </div>
-                                ) : (
-                                <a
-                                    href={URL.createObjectURL(message.file)}
-                                    download={message.file.name}
-                                    className="text-[#f97316] underline"
-                                >
-                                    {message.file.name}
-                                </a>
-                                )}
-                            </div>
                             
-                        )}
+                            )}
+
+                            {/* Message Text */}
+                            {message.text && (
+                                <div className="bg-white text-gray-900 break-words">
+                                    {message.text}
+                                </div>
+                            )}
                         
                             <span
                             className={`text-xs pt-3 text-black mt-1 flex ${
@@ -199,7 +203,7 @@ const Container = ({ messages  }) => {
 
                         
                         {/* Horizontal line */}
-                        {message.sender === 2 && message.dropdownItem && message.dropdownItem !== "Sonstiges" && (
+                        {message.sender === 2 && message.dropdownItem && message.dropdownItem !== "Sonstiges / Bild" && (
                             <div
                             className="absolute left-[85%] right-0 top-1/2 h-0.5 w-[13%]  bg-black"
                             ></div>
@@ -210,7 +214,7 @@ const Container = ({ messages  }) => {
                             className={`text-black absolute top-[44.5%] left-[99%] leading-[0.9rem] whitespace-nowrap ${
                             message.sender === 2 &&
                             message.dropdownItem &&
-                            message.dropdownItem !== "Sonstiges"
+                            message.dropdownItem !== "Sonstiges / Bild"
                                 ? 'block'
                                 : 'hidden'
                             }`}
