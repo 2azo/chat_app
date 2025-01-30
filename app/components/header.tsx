@@ -1,5 +1,3 @@
-
-
 const Header = ({ activeUser, setActiveUser }) => {
     return(
 

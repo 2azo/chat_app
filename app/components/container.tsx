@@ -23,6 +23,7 @@ const Container = ({ messages  }) => {
                     message.sender === 1 ? 'justify-end' : 'justify-start'
                     }`}
                 >
+                {/* message box */}
                 <div
                     className={`relative w-3/5 flex justify-center ${
                         message.sender === 1 ? 'pr-4' : 'pl-4'
@@ -52,16 +53,6 @@ const Container = ({ messages  }) => {
                         ></div>
                     )}
 
-                    {/* chat bubble svg */}
-                    {/* <img
-                        src="/chat-bubble.svg"
-                        alt="Message Bubble"
-                        className={`w-24 absolute scale-y-200 ${
-                        message.sender === 1 ? "text-orange-500" : "text-gray-300 -scale-x-100"
-                        }`}
-                    /> */}
-
-                    {/* message box */}
                     <div
                         className={`relative flex flex-col p-8 max-w-[100%] border-8  leading-5 ${
                         message.sender === 1
@@ -73,20 +64,29 @@ const Container = ({ messages  }) => {
                         {/* Arrow Styling */}
                         {message.sender === 1 && (
                         <>
-                            <div
-                            className="absolute top-full right-[8%] w-0 h-0 border-solid"
-                            style={{
-                                borderWidth: '9px',
-                                borderColor: '#f97316 #f97316 transparent transparent',
-                                borderStyle: 'solid',
+                            <div 
+                            className="absolute border-solid"
+                            style={{ 
+                                top: '101.5%',
+                                right: '8.5%',
+                                width: '42px',
+                                height: '42px',
+                                borderWidth: '25.5px',
+                                borderColor: 'orange transparent transparent orange',
+                                transform: 'rotate(77.5deg)'
                             }}
-                            ></div>
+                            />
                             <div
-                            className="absolute top-[calc(100%-5px)] right-[calc(8%+3px)] w-0 h-0 border-solid"
+                            className="absolute"
                             style={{
-                                borderWidth: '8px',
-                                borderColor: 'white white transparent transparent',
+                                borderWidth: '28.5px',
+                                borderColor: 'white transparent transparent white',
                                 borderStyle: 'solid',
+                                top: '89%',
+                                right: '8.5%',
+                                height: '42px',
+                                width: '42px',
+                                transform: 'rotate(77.5deg)'  // Note: 'rotate' property alone isn't valid CSS, we use transform
                             }}
                             ></div>
                         </>
