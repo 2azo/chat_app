@@ -15,7 +15,7 @@ const Container = ({ messages  }) => {
     return(
         <div className="flex-1 overflow-hidden bg-white ">
             <div className="max-w-2xl mx-auto h-full px-4 py-6 overflow-y-auto ">
-            <div className="flex flex-col gap-2 ">
+            <div className="flex flex-col gap-[2.5rem] ">
                 {messages.map((message) => (
                 <div
                     key={message.id}
@@ -56,61 +56,62 @@ const Container = ({ messages  }) => {
                     <div
                         className={`relative flex flex-col p-8 max-w-[100%] border-8  leading-5 ${
                         message.sender === 1
-                            ? 'border-[#f97316] rounded-[1rem_1rem_1rem_1rem]'
-                            : 'border-gray-300 rounded-[1rem_1rem_1rem_1rem]'
+                            ? 'border-[#f97316] rounded-[2rem]'
+                            : 'border-gray-300 rounded-[2rem]'
                         }`}
                     >
                         
                         {/* Arrow Styling */}
                         {message.sender === 1 && (
-                        <>
-                            <div 
-                            className="absolute border-solid"
-                            style={{ 
-                                top: '101.5%',
-                                right: '8.5%',
-                                width: '42px',
-                                height: '42px',
-                                borderWidth: '25.5px',
-                                borderColor: 'orange transparent transparent orange',
-                                transform: 'rotate(77.5deg)'
-                            }}
-                            />
-                            <div
-                            className="absolute"
-                            style={{
-                                borderWidth: '28.5px',
-                                borderColor: 'white transparent transparent white',
-                                borderStyle: 'solid',
-                                top: '89%',
-                                right: '8.5%',
-                                height: '42px',
-                                width: '42px',
-                                transform: 'rotate(77.5deg)'  // Note: 'rotate' property alone isn't valid CSS, we use transform
-                            }}
-                            ></div>
-                        </>
+                         <>
+                         <div 
+                           className="absolute border-solid"
+                           style={{ 
+                             bottom: '-2.0rem',
+                             right: '4rem',    
+                             borderWidth: '1.1rem',
+                             borderColor: '#f97316 transparent transparent #f97316',
+                             transform: 'rotate(67.5deg)'
+                           }}
+                         />
+                         <div
+                           className="absolute"
+                           style={{
+                             borderWidth: '1.25rem',
+                             borderColor: 'white transparent transparent white',
+                             borderStyle: 'solid',
+                             bottom: '-1.5rem',
+                             right: '4rem',     
+                             transform: 'rotate(67.5deg)'
+                           }}
+                         />
+                       </>
                         )}
 
                         {message.sender !== 1 && (
                         <>
-                            <div
-                            className="absolute top-full left-[8%] w-0 h-0 border-solid"
-                            style={{
-                                borderWidth: '9px',
-                                borderColor: 'gray gray transparent transparent',
-                                borderStyle: 'solid',
-                            }}
-                            ></div>
-                            <div
-                            className="absolute top-[calc(100%-5px)] left-[calc(8%+3px)] w-0 h-0 border-solid"
-                            style={{
-                                borderWidth: '8px',
-                                borderColor: 'white white transparent transparent',
-                                borderStyle: 'solid',
-                            }}
-                            ></div>
-                        </>
+                        <div 
+                          className="absolute border-solid"
+                          style={{ 
+                            bottom: '-2.1rem',
+                            left: '4rem',    
+                            borderWidth: '1.1rem',
+                            borderColor: '#d1d5db  transparent transparent #d1d5db ',
+                            transform: 'rotate(22.5deg)'
+                          }}
+                        />
+                        <div
+                          className="absolute"
+                          style={{
+                            borderWidth: '1.25rem',
+                            borderColor: 'white transparent transparent white',
+                            borderStyle: 'solid',
+                            bottom: '-1.6rem',
+                            left: '4rem',     
+                            transform: 'rotate(22.5deg)'
+                          }}
+                        />
+                      </>
                         )}
 
                         {/* Message Text */}
