@@ -4,17 +4,19 @@ import React, { useState, useRef, useEffect } from 'react';
 import Header from './components/header';
 import  Container  from './components/container';
 import Input from './components/input';
+import { Message } from "./types/message";
 
 
 
-interface Message {
-  id: number;
-  text: string | null;
-  file: File | null;
-  sender: number;
-  timestamp: string;
-  dropdownItem: string | null;
-}
+
+// interface Message {
+//   id: number;
+//   text: string | null;
+//   file: File | null;
+//   sender: number;
+//   timestamp: string;
+//   dropdownItem: string | null;
+// }
 
 const ChatApp = () => {
   const [messages, setMessages] = useState<Message[]>([]);

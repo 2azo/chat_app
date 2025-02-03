@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Dropdown from './dropdown';
-
+import { Message } from "./types/message";
 
 const Input = ({ messages, setMessages, options, activeUser  }) => {
     
